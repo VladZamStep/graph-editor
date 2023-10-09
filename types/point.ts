@@ -1,4 +1,5 @@
-export type Point = {
+export interface IPoint {
   x: number;
   y: number;
+  equals?: (val: number) => boolean;
 }
