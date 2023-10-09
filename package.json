@@ -1,0 +1,23 @@
+{
+  "name": "graph-editor",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev":"webpack-dev-server",
+    "build": "webpack",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "VladStep",
+  "license": "ISC",
+  "dependencies": {
+    "@types/node": "^20.8.3",
+    "typescript": "^5.2.2"
+  },
+  "devDependencies": {
+    "ts-loader": "^9.5.0",
+    "webpack": "^5.88.2",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^4.15.1"
+  }
+}
