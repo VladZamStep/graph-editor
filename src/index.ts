@@ -1,4 +1,5 @@
 import { Graph } from './math/graph'
+import { GraphEditor } from './math/graphEditor';
 import { Point } from './primitives/point'
 import { Segment } from './primitives/segment';
 
@@ -23,7 +24,16 @@ const s3 = new Segment(p2, p3);
 const s4 = new Segment(p3, p1);
 
 const ctx: CanvasRenderingContext2D = canvas.getContext('2d');
-const graph = new Graph([p1, p2, p3, p4],[s1,s2,s3,s4]);
+const graph = new Graph([p1, p2, p3, p4], [s1, s2, s3, s4]);
+
+const graphEditor = new GraphEditor(canvas, graph);
+animate();
+
+function animate() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  graphEditor.display();
+  requestAnimationFrame(animate);
+}
 console.log(graph);
 graph.draw(ctx);
 
