@@ -1,4 +1,5 @@
 import { Point } from "../primitives/point";
+import { Segment } from "../primitives/segment";
 
 export class Graph {
   points: any[];
@@ -7,6 +8,15 @@ export class Graph {
   constructor(points = [], segments = []) {
     this.points = points;
     this.segments = segments;
+  }
+  
+  static load(info) {
+    const points = info.points.map((i)=>new Point(i.x, i.y));
+    const segments = info.segments.maps((i) => new Segment(
+      points.find((p)=>p.equals(i.p1)),
+      points.find((p)=>p.equals(i.p2))
+    ));
+    return new Graph(points, segments);
   }
 
   private addPoint(point: Point) {

@@ -2,17 +2,20 @@ import { Point } from "../primitives/point";
 import { Segment } from "../primitives/segment";
 import { Graph } from "./graph";
 import { getNearestPoint } from "./utils";
+import Viewport from "./viewport";
 
 export class GraphEditor{
   ctx: CanvasRenderingContext2D;
+  viewport: Viewport;
   canvas: HTMLCanvasElement;
   graph: Graph;
   mouse: Point | null;
   selected: Point | null;
   hovered: Point | null;
   dragging: boolean;
-  constructor(canvas, graph) {
-    this.canvas = canvas;
+  constructor(viewport: Viewport, graph: Graph) {
+    this.viewport = viewport;
+    this.canvas = viewport.canvas;
     this.graph = graph;
 
     this.ctx = this.canvas.getContext("2d");
@@ -27,6 +30,7 @@ export class GraphEditor{
   }
   #addEventListeners() {
     this.canvas.addEventListener('mousedown', this.#handleMousedown.bind(this));
+    document.addEventListener('keydown', this.#handleKeyDown.bind(this))
     this.canvas.addEventListener('mousemove', this.#handleMousemove.bind(this));
     this.canvas.addEventListener('contextmenu', (evt) => evt.preventDefault());
     this.canvas.addEventListener('mouseup', () => this.dragging = false);
@@ -52,7 +56,7 @@ export class GraphEditor{
         this.#removePoint(this.hovered);
       }
     }
-    if (evt.button == 0) {
+    if (evt.button == 0 && evt.shiftKey === false) {
       if (this.hovered) {
         this.#select(this.hovered);
         this.dragging = true;
@@ -64,9 +68,19 @@ export class GraphEditor{
     }
   }
 
+  #handleKeyDown(evt) {
+    if (evt.key === "Escape") {
+      if (this.selected) {
+        this.selected = null;
+      } else if (this.hovered) {
+        this.#removePoint(this.hovered);
+      }
+    }
+  }
+
   #handleMousemove(evt) {
-    this.mouse = new Point(evt.offsetX, evt.offsetY);
-      this.hovered = getNearestPoint(this.mouse, this.graph.points, 10);
+    this.mouse = this.viewport.getMouse(evt);
+      this.hovered = getNearestPoint(this.mouse, this.graph.points, 10 * this.viewport.zoom);
       if (this.dragging) {
         this.selected.x = this.mouse.x;
         this.selected.y = this.mouse.y;
@@ -88,5 +102,10 @@ export class GraphEditor{
     }
   }
 
+  dispose() {
+    this.graph.dispose();
+    this.selected = null;
+    this.hovered = null;
+  }
 
 }
