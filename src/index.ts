@@ -1,7 +1,9 @@
 import { Graph } from './math/graph'
 import { GraphEditor } from './math/graphEditor';
 import Viewport from './math/viewport';
+import Envelope from './primitives/envelope';
 import { Point } from './primitives/point'
+import Polygon from './primitives/polygon';
 import { Segment } from './primitives/segment';
 
 const canvas = <HTMLCanvasElement>document.getElementById('myCanvas');
@@ -25,6 +27,8 @@ animate();
 function animate() {
   viewport.reset();
   graphEditor.display();
+  // new Polygon(graph.points).draw(ctx);
+  new Envelope(graph.segments[0],80).draw(ctx);
   requestAnimationFrame(animate);
 }
 console.log(graph);
