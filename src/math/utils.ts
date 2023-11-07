@@ -13,8 +13,16 @@ export function getNearestPoint(loc, points:Point[], threshold = Number.MAX_SAFE
   return nearest;
 };
 
-function distance(p1:Point, p2:Point){
+export function distance(p1:Point, p2:Point){
   return Math.hypot(p1.x - p2.x, p1.y - p2.y);
+}
+
+export function normalize(p:Point) {
+  return scale(p, 1 / magnitude(p));
+}
+
+function magnitude(p: Point){
+  return Math.hypot(p.x, p.y);
 }
 
 export function average(p1: Point, p2: Point) {
@@ -49,7 +57,8 @@ export function getIntersection(A:Point, B:Point, C:Point, D:Point) {
   const uTop = (C.y - A.y) * (A.x - B.x) - (C.x - A.x) * (A.y - B.y);
   const bottom = (D.y - C.y) * (B.x - A.x) - (D.x - C.x) * (B.y - A.y);
 
-  if (bottom != 0) {
+  const eps = 0.001;
+  if (Math.abs(bottom) > eps) {
      const t = tTop / bottom;
      const u = uTop / bottom;
      if (t >= 0 && t <= 1 && u >= 0 && u <= 1) {

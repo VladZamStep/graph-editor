@@ -1,3 +1,4 @@
+import { distance, normalize, subtract } from "../math/utils";
 import { Point } from "./point";
 
 export class Segment {
@@ -7,6 +8,14 @@ export class Segment {
   constructor(p1:Point, p2:Point) {
     this.p1 = p1;
     this.p2 = p2;
+  }
+
+  length() {
+    return distance(this.p1, this.p2);
+  }
+
+  directionVector() {
+    return normalize(subtract(this.p2, this.p1));
   }
 
   equals(seg: any) {
